@@ -5,6 +5,6 @@ import map
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('users.urls')),
-    path('map',include('map.urls'))
+    path('',include('map.urls')),
 
 ]
