@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}" type="text/css">
+    <!--<script src="{% static 'static/js/' %}"></script>-->
+    <title>Страница регистрации</title>
+</head>
+<body>
+<div class="main-image _ibg">
+    <img src={% static "images/PageRegistration/main.png" %} alt="main">
+</div>
+<div class="wrapper">
+    <div class="logo">LOGO</div>
+    <div class="text-container _container">
+        <h1 class="text-container__title">Создать аккаунт</h1>
+        <div class="text-container__subtitle">Уже есть аккаунт? <a href="login"
+                                                                   class="text-container__subtitle entrance">Войти</a>
+        </div>
+    </div>
+    <form action='registration' method="POST">
+                {% csrf_token %}
+    <div class="form-fields _container">
+        <div class="form-field form-field__email">
+                <input type="text" placeholder="E-mail" name='email'>
+        </div>
+            <div class="form-field__fullname">
+                <div class="form-field form-field__name">
+                    <input type="text" placeholder="Имя" name='first_name'>
+                </div>
+                <div class="form-field form-field__lastname">
+                    <input type="text" placeholder="Фамилия" name='second_name'>
+                </div>
+                <div class="form-field form-field__lastname">
+                    <input type='date' max="{{current_time}}" min="1950-01-01" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" placeholder="Дата рождения" name='birthday'>
+                </div>
+            </div>
+            <div class="form-field form-field__password">
+                <input type="password" placeholder="Пароль" name="password">
+            </div>
+    </div>
+        <input type="submit" class="form-button form-button__createacc" value="Создать аккаунт">
+    </form>
+    <div class="form-buttons _container">
+
+        <div class="divider">или</div>
+        <a href='#' class="form-button form-button__google"><img src={% static "images/PageRegistration/01.svg"  %} alt="google">Войти с
+            помощью Google</a>
+        <a href="/login/vk-oauth2" class="form-button form-button__vk"><img src={% static "images/PageRegistration/02.svg"%} alt="vk">Войти с помощью
+            ВКонтакте</a>
+    </div>
+</div>
+<!--<script src="/registration/js/script.js"></script>-->
+</body>
+</html>
