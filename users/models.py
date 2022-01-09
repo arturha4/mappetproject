@@ -41,7 +41,6 @@ class MyCustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     second_name = models.CharField(max_length=30)
     birthday = models.CharField(max_length=10, default=None)
-    points = models.ForeignKey(Point, on_delete=models.CASCADE, default=None, null=True)
 
     objects = AccountManager()
 

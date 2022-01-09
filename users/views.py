@@ -57,7 +57,7 @@ def home_page(request):
 @login_required(login_url='login')
 def userlogout(request):
     logout(request)
-    return redirect('map')
+    return redirect('login')
 
 
 from django.shortcuts import render

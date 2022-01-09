@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic import FormView
-
+from .services import create_point
 
 @login_required(login_url='login')
 def map(request):
@@ -11,7 +11,7 @@ def map(request):
 
 class AddPointView(FormView):
     def post(self, request, *args, **kwargs):
-        print(request.POST)
+        create_point(request)
         return redirect('/map')
 
 
