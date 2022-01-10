@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="">
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>  <title>Карта</title>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>  <title>Карта</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 </head>
 <body>
 <p>Привет!  {{ fname }} {{ sname }}</p>
@@ -23,7 +24,9 @@
 	}).addTo(mymap);
     var popup = L.popup();
 
+
     function onMapClick(e) {
+        var address=getAddress(e)
         popup
             .setLatLng(e.latlng)
             .setContent(
@@ -38,7 +41,7 @@
                         '<input type="text" placeholder="Введите название" required name="name">' +
                         '</div>' +
                         '<div class="form-field form-object-address">' +
-                        '<input type="text" placeholder="Введите адрес" required name="address" value="Пушкина">' +
+                        '<input type="text" placeholder="Введите адрес" required name="address" value="'+address+'">' +
                         '</div>' +
                         '<div class="form-field form-category">' +
                         '<select  required name="type">' +
@@ -57,6 +60,11 @@
                         '</div>')
             .openOn(mymap);
     }
+        function getAddress(e) {
+            var data=jQuery.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=<'+e.latlng.lat+'>&lon=<'+e.latlng.lng)
+            console.log(data['address'])
+            return data["address"]["road"]
+        }
 
     mymap.on('click', onMapClick);
 

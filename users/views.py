@@ -24,12 +24,13 @@ class CustomLoginView(LoginView):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.info(request, f'Добро пожаловать: {username}')
             return redirect('/map')
         messages.error(request, "Пользователя с такими данными не существует")
         return redirect('/login')
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/map')
         return render(request, 'users/login.html')
 
 
@@ -46,6 +47,8 @@ class RegistrationView(FormView):
             return redirect('/registration')
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('/map')
         return render(request, 'users/registration.html',context={'current_time': date.today().strftime("%Y-%m-%d")})
 
 
