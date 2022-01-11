@@ -9,4 +9,4 @@ def create_point(request):
     type=data['type'][0]
     latitude=data['lat']
     longitude=data['lng']
-    Point.objects.create(name=name,type=type,latitude=latitude,longitude=longitude,description='Добавьте ваше описание',created_by_id=creator_id)
+    Point.objects.create(name=name,type=type,latitude=latitude,longitude=longitude,description='Добавьте ваше описание',created_by_id=creator_id,address=address)
