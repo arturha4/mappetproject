@@ -4,5 +4,6 @@ from rest_framework.routers import DefaultRouter
 
 
 urlpatterns = [
-    path('',views.map),
+    path('map',views.map),
+    path('addpoint', views.AddPointView.as_view()),
 ]

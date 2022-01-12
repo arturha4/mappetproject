@@ -24,12 +24,13 @@ class CustomLoginView(LoginView):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.info(request, f'Добро пожаловать: {username}')
             return redirect('/map')
         messages.error(request, "Пользователя с такими данными не существует")
         return redirect('/login')
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/map')
         return render(request, 'users/login.html')
 
 
@@ -46,7 +47,9 @@ class RegistrationView(FormView):
             return redirect('/registration')
 
     def get(self, request):
-        return render(request, 'users/registration  `                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ```````````                                                                                                                                                                             +.html', context={'current_time': date.today().strftime("%Y-%m-%d")})
+        if request.user.is_authenticated:
+            return redirect('/map')
+        return render(request, 'users/registration.html',context={'current_time': date.today().strftime("%Y-%m-%d")})
 
 
 @login_required(login_url='login')
@@ -57,7 +60,7 @@ def home_page(request):
 @login_required(login_url='login')
 def userlogout(request):
     logout(request)
-    return redirect('map')
+    return redirect('login')
 
 
 from django.shortcuts import render
