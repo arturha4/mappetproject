@@ -1,6 +1,5 @@
-from .models import Point
+from map.models import Point
 
-#добавить адрес
 def create_point(request):
     data=request.POST
     creator_id=request.user.id
@@ -9,4 +8,11 @@ def create_point(request):
     type=data['type'][0]
     latitude=data['lat']
     longitude=data['lng']
-    Point.objects.create(name=name,type=type,latitude=latitude,longitude=longitude,description='Добавьте ваше описание',created_by_id=creator_id,address=address)
+    description=data['description']
+    Point.objects.create(name=name,type=type,latitude=latitude,longitude=longitude,description=description,created_by_id=creator_id,address=address)
+
+'''Возвращает  все точки'''
+def get_points():
+    return Point.objects.all()
+
+print(get_points())

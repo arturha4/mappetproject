@@ -1,12 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic import FormView
-from .services import create_point
+from .services import create_point,get_points
 
 @login_required(login_url='login')
 def map(request):
+    points=get_points()
     firstname,secondname=request.user.first_name,request.user.second_name
-    return render(request, template_name='map/map.html',context={"fname":firstname,"sname":secondname})
+    return render(request, template_name='map/map.html',context={"fname":firstname,"sname":secondname,"points":points})
 
 
 class AddPointView(FormView):
