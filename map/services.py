@@ -15,4 +15,3 @@ def create_point(request):
 def get_points():
     return Point.objects.all()
 
-print(get_points())
