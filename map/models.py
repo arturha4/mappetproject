@@ -21,4 +21,4 @@ class Comment(models.Model):
     text=models.TextField()
     creator_name=models.CharField(max_length=30)
     creator_id=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
-    created_at=models.DateTimeField(default=timezone.now())
+    created_at=models.DateTimeField(default=timezone.now)
