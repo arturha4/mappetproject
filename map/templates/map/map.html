@@ -24,7 +24,27 @@
     var popup = L.popup();
     {% for point in points %}
         var marker = L.marker(["{{point.latitude}}".replace(',','.'),"{{point.longitude}}".replace(',','.')]).addTo(mymap);
-        marker.bindPopup("<b>{{ point.name }}</b><br>{{ point.address }}<br>{{ point.description }}");
+        marker.bindPopup(
+            '<b>{{ point.name }}</b><br>{{ point.address }}<br>{{ point.description }}<br>'+
+            '<form action="/html/tags/html_form_tag_action.cfm" method="post">\n' +
+            '<div>\n' +
+            '<textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1.2em;">\n' +
+            'Hey... say something!\n' +
+            '</textarea>\n' +
+            '</div>\n' +
+            '<input type="submit" value="Submit">\n' +
+            '</form>\n'+
+            '<hr>\n' +
+            '{% for comment in point.comments.all %}\n'+
+                '    <div class="comment">\n'+
+                '        <div class="date">{{ comment.created_at }}</div>\n'+
+                '        <strong>{{ comment.author_id }}</strong>\n'+
+                '        <p>{{ comment.text}}</p>\n'+
+                '    </div>\n'+
+                '{% empty %}\n'+
+                '    <p>No comments here yet :(</p>\n'+
+                '{% endfor %}'
+        );
     {% endfor %}
     function getAddress(e) {
             url = 'https://nominatim.openstreetmap.org/reverse?&format=jsonv2&lat='+e.latlng.lat+'&lon='+e.latlng.lng;
