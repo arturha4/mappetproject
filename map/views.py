@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic import FormView
-from .services import create_point,get_points
+from .services import create_point,get_points, create_comment
+
 
 @login_required(login_url='login')
 def map(request):
@@ -12,9 +13,18 @@ def map(request):
 
 class AddPointView(FormView):
     def post(self, request, *args, **kwargs):
-        create_point(request)
-        return redirect('/map')
-
+        try:
+            create_point(request)
+            return redirect('/')
+        except:
+            return redirect("/")
 
     def get(self, request, *args, **kwargs):
         return render(request,'map/map.html',context={"url":'addpoint'})
+
+
+class AddCommentView(FormView):
+    def post(self,request,*args,**kwargs):
+        create_comment(request)
+        return redirect('/')
+

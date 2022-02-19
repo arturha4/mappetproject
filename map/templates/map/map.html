@@ -1,14 +1,19 @@
+{% extends 'users/navbar.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+    {% load static %}
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>  <title>Карта</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/comments.css' %}">
 </head>
 <body>
-<p>Привет!  {{ fname }} {{ sname }}</p>
- <div id="mapid" style="width: 1280px; height: 640px"></div>
+{% block content %}
+    <div class="map">
+        <div id="mapid" style="width: 100vw; height: 100vh;"></div>
+    </div>
 <script>
 	var mymap = L.map('mapid').setView([56.82, 60.6], 12);
 	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYXJ0dXJoYTQiLCJhIjoiY2t5MDlieWVpMDB5YjJvcDE0Y3p1a3F3ZyJ9.ak-KvJnYVBeYv9wIqOWCjA', {
@@ -20,30 +25,35 @@
 		zoomOffset: -1
 	}).addTo(mymap);
 
-
     var popup = L.popup();
     {% for point in points %}
         var marker = L.marker(["{{point.latitude}}".replace(',','.'),"{{point.longitude}}".replace(',','.')]).addTo(mymap);
         marker.bindPopup(
-            '<b>{{ point.name }}</b><br>{{ point.address }}<br>{{ point.description }}<br>'+
-            '<form action="/html/tags/html_form_tag_action.cfm" method="post">\n' +
+            "<p1>Название: {{ point.name }}</p1><br>"+
+            '<p1>Адрес: {{ point.address }}</p1><br><p1>Описание: {{ point.description }}</p1><br>'+
+            '<form action="/addcomment" method="post">\n' +
             '<div>\n' +
-            '<textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1.2em;">\n' +
-            'Hey... say something!\n' +
-            '</textarea>\n' +
-            '</div>\n' +
-            '<input type="submit" value="Submit">\n' +
-            '</form>\n'+
             '<hr>\n' +
+            '<div class="point_info">\n'+
             '{% for comment in point.comments.all %}\n'+
-                '    <div class="comment">\n'+
-                '        <div class="date">{{ comment.created_at }}</div>\n'+
-                '        <strong>{{ comment.author_id }}</strong>\n'+
-                '        <p>{{ comment.text}}</p>\n'+
+                '<div class="comment">\n'+
+                '<h3>{{ comment.author}}</h3>\n'+
+                '<p>{{ comment.text}}</p>\n'+
+                '<div class="date">{{ comment.created_at }}</div>\n'+
                 '    </div>\n'+
+                '<hr>\n' +
                 '{% empty %}\n'+
                 '    <p>No comments here yet :(</p>\n'+
-                '{% endfor %}'
+                '{% endfor %}'+
+            '</div>\n'+
+            'Оставьте свой комментарий о точке:\n'+
+            '<textarea name="comment" id="comment" required style="font-family:sans-serif;font-size:1.2em;">\n' +
+            '</textarea>\n' +
+            '<input type="hidden" name="point_id" value={{ point.id }}>\n'+
+            '</div>\n' +
+            '<input type="submit" value="Submit">\n' +
+            '{% csrf_token %}'+
+            '</form>\n'
         );
     {% endfor %}
     function getAddress(e) {
@@ -104,5 +114,6 @@
     mymap.on('click', onMapClick);
 
 </script>
+{% endblock %}
 </body>
 </html>

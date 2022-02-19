@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from mappetproject import settings
+from users.models import MyCustomUser
 
 '''Модель точки'''
 class Point(models.Model):
@@ -15,10 +16,10 @@ class Point(models.Model):
     def __str__(self):
         return self.name
 
-'''Модель комментария'''
-class Comment(models.Model):
+'''Модель комментария для точки '''
+class PointComment(models.Model):
     text=models.TextField()
-    author_id=models.CharField(max_length=30)
+    author=models.ForeignKey(MyCustomUser, on_delete=models.CASCADE, default=None, related_name='authors')
     point_id=models.ForeignKey(Point, on_delete=models.CASCADE, default=None,related_name='comments')
     created_at=models.DateTimeField(default=timezone.now)
 

@@ -3,6 +3,7 @@ from map import views
 
 
 urlpatterns = [
-    path('map',views.map),
+    path('',views.map),
     path('addpoint', views.AddPointView.as_view()),
+    path('addcomment',views.AddCommentView.as_view()),
 ]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Point, Comment
+from .models import Point, PointComment
 
 admin.site.register(Point)
-admin.site.register(Comment)
+admin.site.register(PointComment)
