@@ -5,7 +5,7 @@ from users.models import MyCustomUser
 
 '''Модель точки'''
 class Point(models.Model):
-    created_by=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
+    created_by=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='creator', default=None)
     address=models.TextField()
     name=models.TextField()
     description=models.TextField()

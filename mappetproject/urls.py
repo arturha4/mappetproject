@@ -8,7 +8,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('users.urls')),
     path('',include('map.urls')),
-
 ]
-if settings.DEBUG:
-    urlpatterns+=static(settings.MEDIA_URL)

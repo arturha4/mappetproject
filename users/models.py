@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 
@@ -27,6 +27,7 @@ class AccountManager(BaseUserManager):
                           **other_fields)
         user.set_password(password)
         user.save()
+        Profile.objects.create(profile_id=user.id,birthday=birthday,user=user)
         return user
 
 
@@ -48,3 +49,16 @@ class MyCustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.first_name + ' ' + self.second_name
+
+
+
+
+class Profile(models.Model):
+    profile_id=models.AutoField(primary_key=True)
+    birthday = models.CharField(max_length=10, default=None)
+    user = models.OneToOneField(MyCustomUser, on_delete=models.CASCADE)
+    avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
+    bio = models.TextField(null=True)
+
+    def __str__(self):
+        return "Профиль: "+ str(self.profile_id)

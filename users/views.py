@@ -52,6 +52,9 @@ class RegistrationView(FormView):
         return render(request, 'users/registration.html',context={'current_time': date.today().strftime("%Y-%m-%d")})
 
 
+
+
+
 @login_required(login_url='login')
 def home_page(request):
     return render(request, 'users/home.html')

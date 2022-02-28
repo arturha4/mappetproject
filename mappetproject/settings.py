@@ -15,8 +15,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
-# Application definition
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -114,8 +116,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
 
-try:
-    from .local_settings import *
-except ImportError:
-    from .prod_settings import *
+
+
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     from .prod_settings import *
 
