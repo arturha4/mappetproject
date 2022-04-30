@@ -27,3 +27,5 @@ class PointComment(models.Model):
         return self.text
     class Meta:
         ordering=('created_at',)
+
+

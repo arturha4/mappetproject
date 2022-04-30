@@ -1,4 +1,7 @@
+import json
+
 from map.models import Point,PointComment
+from django.core import serializers
 
 def create_point(request):
     data=request.POST
@@ -13,11 +16,19 @@ def create_point(request):
 
 
 def create_comment(request):
-    comment,point_id=request.POST['comment'],request.POST['point_id']
-    point=Point.objects.get(id=point_id)
-    PointComment.objects.create(text=comment,point_id=point,author=request.user)
+    try:
+        comment,point_id=request.POST['comment'],request.POST['point_id']
+        point=Point.objects.get(id=point_id)
+        PointComment.objects.create(text=comment,point_id=point,author=request.user)
+    except:
+        data=json.loads(request.body)
+        ax_comment,ax_point_id=data["comment"],data["point_id"]
+        point = Point.objects.get(id=ax_point_id)
+        PointComment.objects.create(text=ax_comment,point_id=point,author=request.user)
 
 
+def get_json_point_comments():
+    return serializers.serialize("json", PointComment.objects.all())
 
 '''Возвращает  все точки'''
 def get_points():
